@@ -24,6 +24,7 @@ import (
 	log "github.com/sirupsen/logrus"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	"github.com/k0kubun/pp"
 )
 
 var applyCfg = viper.New()
@@ -62,7 +63,10 @@ var applyCmd = &cobra.Command{
 		}
 		switch kind {
 		case string(kftypes.KFDEF):
+			pp.Println(configFilePath)
 			kfApp, err = coordinator.NewLoadKfAppFromURI(configFilePath)
+			pp.Println(kfApp)
+			panic("NO")
 			if err != nil {
 				return fmt.Errorf("failed to build kfApp from URI %s: %v", configFilePath, err)
 			}

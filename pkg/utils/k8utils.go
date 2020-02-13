@@ -20,6 +20,7 @@ import (
 	"fmt"
 	"github.com/cenkalti/backoff"
 	"github.com/ghodss/yaml"
+	"github.com/k0kubun/pp"
 	gogetter "github.com/hashicorp/go-getter"
 	configtypes "github.com/kubeflow/kfctl/v3/config"
 	kfapis "github.com/kubeflow/kfctl/v3/pkg/apis"
@@ -303,7 +304,8 @@ func (a *Apply) Apply(data []byte) error {
 	a.tmpfile = a.tempFile(data)
 	a.stdin = os.Stdin
 	os.Stdin = a.tmpfile
-	defer a.cleanup()
+	pp.Println(a.tmpfile.Name())
+	// defer a.cleanup()
 	ioStreams := genericclioptions.IOStreams{In: os.Stdin, Out: os.Stdout, ErrOut: os.Stderr}
 	a.options = kubectlapply.NewApplyOptions(ioStreams)
 	a.options.DeleteFlags = a.deleteFlags("that contains the configuration to apply")
@@ -317,11 +319,11 @@ func (a *Apply) Apply(data []byte) error {
 	var err error
 	func() {
 		defer func() {
-			if temp := recover(); temp != nil {
-				err = temp.(error)
-			}
+			// if temp := recover(); temp != nil {
+			// 	err = temp.(error)
+			// }
 		}()
-		err = a.run()
+		// err = a.run()
 	}()
 	if err != nil {
 		return err
